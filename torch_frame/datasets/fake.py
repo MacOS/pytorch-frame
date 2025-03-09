@@ -55,7 +55,6 @@ class FakeDataset(torch_frame.data.Dataset):
         tmp_path (str, optional): Temporary path to save created images.
     """
 
-    _supported_task_types = []
     def __init__(
         self,
         num_rows: int,
