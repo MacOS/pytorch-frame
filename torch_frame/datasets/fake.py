@@ -70,6 +70,17 @@ class FakeDataset(torch_frame.data.Dataset):
         tmp_path: str | None = None,
     ) -> None:
         assert len(stypes) > 0
+
+        if task_type not in [
+            TaskType.BINARY_CLASSIFICATION,
+            TaskType.MULTICLASS_CLASSIFICATION,
+            TaskType.REGRESSION,
+        ]:
+            raise ValueError(
+                "FakeDataset only support binary classification, "
+                "multiclass classification or regression type, but"
+                f" got {task_type}")
+
         df_dict: dict[str, list | np.ndarray]
         arr: list | np.ndarray
         if task_type == TaskType.REGRESSION:
@@ -98,11 +109,6 @@ class FakeDataset(torch_frame.data.Dataset):
             labels[1] = 1
             df_dict = {'target': labels}
             col_to_stype = {'target': stype.categorical}
-        else:
-            raise ValueError(
-                "FakeDataset only support binary classification, "
-                "multiclass classification or regression type, but"
-                f" got {task_type}")
         if stype.numerical in stypes:
             for col_name in ['num_1', 'num_2', 'num_3']:
                 arr = np.random.randn(num_rows)
