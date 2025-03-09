@@ -54,6 +54,8 @@ class FakeDataset(torch_frame.data.Dataset):
         task_type (TaskType): Task type (default: :obj:`TaskType.REGRESSION`)
         tmp_path (str, optional): Temporary path to save created images.
     """
+
+    _supported_task_types = []
     def __init__(
         self,
         num_rows: int,
@@ -82,8 +84,8 @@ class FakeDataset(torch_frame.data.Dataset):
                 f" got {task_type}")
 
         if create_split and num_rows < 3:
-                raise ValueError("Dataframe needs at least 3 rows to include"
-                                 " each of train, val and test split.")
+            raise ValueError("Dataframe needs at least 3 rows to include"
+                             " each of train, val and test split.")
 
 
         df_dict: dict[str, list | np.ndarray]
