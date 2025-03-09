@@ -81,6 +81,11 @@ class FakeDataset(torch_frame.data.Dataset):
                 "multiclass classification or regression type, but"
                 f" got {task_type}")
 
+        if create_split and num_rows < 3:
+                raise ValueError("Dataframe needs at least 3 rows to include"
+                                 " each of train, val and test split.")
+
+
         df_dict: dict[str, list | np.ndarray]
         arr: list | np.ndarray
         if task_type == TaskType.REGRESSION:
@@ -220,9 +225,6 @@ class FakeDataset(torch_frame.data.Dataset):
             # test, we will implement `random_split` and `split_by_col`
             # function in the Dataset class. We will modify the following lines
             # when the functions are introduced.
-            if num_rows < 3:
-                raise ValueError("Dataframe needs at least 3 rows to include"
-                                 " each of train, val and test split.")
             split = [SPLIT_TO_NUM['train']] * num_rows
             split[1] = SPLIT_TO_NUM['val']
             split[2] = SPLIT_TO_NUM['test']
